@@ -8,17 +8,19 @@ use App\Models\Persona;
 class PersonaFactory extends Factory
 {
     protected $model = Persona::class;
-
+    public static $correoAux;
     public function definition()
     {
-        return ['correo' => $this->faker->email,
+        $fak = \Faker\Factory::create('es_ES');
+        self::$correoAux =  $fak->email;
+        return ['correo' => self::$correoAux,
         'nombre' => $this->faker->name,
-        'contraseña' => $this->faker->password,
+        'contraseña' => 'gatito',
         'fechaNacimiento' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
         'ciudad' => $this->faker->state,
         'descripcion' => $this->faker->randomElement(['mu wape', 'me gusta doraemon', 'el amor de tu vida']),
         'tipoRelacion' => $this->faker->randomElement(['esporadica', 'seria', 'lo k surja']),
-        'foto' => $this->faker->randomElement(['selfie', 'retrato', 'no se que poner']),
+        'foto' => '/images/prueba/'.rand(1,32).'.jpg',
         'tieneHijos' => rand(0,1),
         'quiereHijos' => rand(0,1),
         'conectado' => rand(0,1),

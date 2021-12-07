@@ -18,9 +18,8 @@ class CreateRolAsig extends Migration
             $table->unsignedBigInteger('id_rol');
             $table->primary(['correo', 'id_rol']);
             $table->timestamps();
-
             $table->foreign('correo')->references('correo')->on('personas')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('id_rol')->references('id')->on('roles');
+            $table->foreign('id_rol')->references('id')->on('roles')->onDelete('cascade');
         });
     }
 
