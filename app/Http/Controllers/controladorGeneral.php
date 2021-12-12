@@ -82,4 +82,19 @@ class controladorGeneral extends Controller
             return response()->json(['message'=>'El gusto genero no se ha añadido'],400);
         }
     }
+
+
+    public function iniciarSesion(Request $req){
+        ///dd($req->get('correo'));
+        $correo = $req->get('correo');
+        $contraseña = $req->get('contraseña');
+
+        $persona = Persona::find($correo);
+        if(isset($persona)){
+            //session()->put('persona',$persona);
+            return response()->json(['message'=>'Inicio de sesión correcto: '.$persona],201);
+        }else{
+            return response()->json(['message'=>'¡ADVERTENCIA: '.$persona .'No registrada'],400);
+        }
+    }
 }
