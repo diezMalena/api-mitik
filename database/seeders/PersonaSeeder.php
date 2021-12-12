@@ -30,7 +30,7 @@ class PersonaSeeder extends Seeder
             Rol_Asignado::factory()->create();
 
             //Le asignamos las preferencias a la persona:
-            for ($j = 1; $j < Preferencia::all()->count() ; $j++) {
+            for ($j = 0; $j < Preferencia::all()->count() ; $j++) {
                 PreferenciaPersonaFactory::$correo = PersonaFactory::$correoAux;
                 PreferenciaPersonaFactory::$id_prefe = $j;
                 PreferenciaPersona::factory()->create();

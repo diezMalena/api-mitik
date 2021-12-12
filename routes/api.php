@@ -21,4 +21,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('generos',[controladorGeneral::class,'listarGeneros']);
 Route::get('preferencias',[controladorGeneral::class,'listarPreferencias']);
+Route::get('personas',[controladorGeneral::class,'listarPersonas']);
+Route::get('preferenciaPersona',[controladorGeneral::class,'preferenciaPersona']);
+Route::get('gustoGenero',[controladorGeneral::class,'gustoGenero']);
+
+Route::group(['middleware' => ['Cors']], function () {
+    //Rutas a las que se permitirá acceso
+    Route::post('registrar',[controladorGeneral::class,'registrar']);
+    Route::put('actualizarPersona',[controladorGeneral::class,'actualizarPersona']);
+    Route::post('addPreferenciaPersona',[controladorGeneral::class,'addPreferenciaPersona']);
+    Route::post('addGustoGenero',[controladorGeneral::class,'addGustoGenero']);
+
+
+});
+
+
 
