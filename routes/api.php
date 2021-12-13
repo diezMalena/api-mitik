@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\controladorGeneral;
+use App\Http\Controllers\controladorUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,7 @@ Route::group(['middleware' => ['Cors']], function () {
     Route::post('addGustoGenero',[controladorGeneral::class,'addGustoGenero']);
     Route::post('iniciarSesion',[controladorGeneral::class,'iniciarSesion']);
 
+    Route::post('sugerencias',[controladorUser::class,'sugerencias']);
 
 });
 
