@@ -31,6 +31,7 @@ Route::group(['middleware' => ['Cors']], function () {
     Route::put('actualizarPersona',[controladorGeneral::class,'actualizarPersona']);
     Route::post('addPreferenciaPersona',[controladorGeneral::class,'addPreferenciaPersona']);
     Route::post('addGustoGenero',[controladorGeneral::class,'addGustoGenero']);
+    Route::post('iniciarSesion',[controladorGeneral::class,'iniciarSesion']);
 
 
 });
