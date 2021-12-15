@@ -41,6 +41,8 @@ Route::group(['middleware' => ['Cors']], function () {
     Route::any('amigosConectados',[controladorUser::class,'amigosConectados']);
     Route::any('buscarPersona',[controladorUser::class,'buscarPersona']);
     Route::post('restaurarPassword',[controladorUser::class,'restaurarPassword']);
+    Route::post('restaurarPassword',[controladorUser::class,'restaurarPassword']);
+    Route::get('activarCuenta',[controladorGeneral::class,'activarCuenta']);
 
 });
 
