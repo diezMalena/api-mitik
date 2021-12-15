@@ -39,6 +39,7 @@ Route::group(['middleware' => ['Cors']], function () {
     Route::post('notificaciones',[controladorUser::class,'notificaciones']);
     Route::post('cambiarLeido',[controladorUser::class,'cambiarLeido']);
     Route::any('amigosConectados',[controladorUser::class,'amigosConectados']);
+    Route::any('buscarPersona',[controladorUser::class,'buscarPersona']);
 
 });
 
