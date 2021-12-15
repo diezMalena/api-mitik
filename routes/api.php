@@ -40,6 +40,7 @@ Route::group(['middleware' => ['Cors']], function () {
     Route::post('cambiarLeido',[controladorUser::class,'cambiarLeido']);
     Route::any('amigosConectados',[controladorUser::class,'amigosConectados']);
     Route::any('buscarPersona',[controladorUser::class,'buscarPersona']);
+    Route::post('restaurarPassword',[controladorUser::class,'restaurarPassword']);
 
 });
 
