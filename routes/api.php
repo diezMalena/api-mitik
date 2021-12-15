@@ -34,7 +34,10 @@ Route::group(['middleware' => ['Cors']], function () {
     Route::post('addGustoGenero',[controladorGeneral::class,'addGustoGenero']);
     Route::post('iniciarSesion',[controladorGeneral::class,'iniciarSesion']);
 
-    Route::post('sugerencias',[controladorUser::class,'sugerencias']);
+    Route::any('sugerencias',[controladorUser::class,'sugerencias']);
+    Route::post('darLike',[controladorUser::class,'darLike']);
+    Route::post('notificaciones',[controladorUser::class,'notificaciones']);
+    Route::post('cambiarLeido',[controladorUser::class,'cambiarLeido']);
 
 });
 
