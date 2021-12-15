@@ -91,7 +91,9 @@ class controladorGeneral extends Controller
 
         $persona = Persona::find($correo);
         if(isset($persona)){
-            //session()->put('persona',$persona);
+            $persona->conectado = 1;
+            Persona::where('correo', $correo)
+            ->update(['conectado' => $persona->conectado]);
             return response()->json(['message'=>'Inicio de sesión correcto: '.$persona],201);
         }else{
             return response()->json(['message'=>'¡ADVERTENCIA: '.$persona .'No registrada'],400);

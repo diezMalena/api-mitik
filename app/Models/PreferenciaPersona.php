@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PreferenciaPersona extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'correo';
     protected $table = 'preferencias_personas';
     protected $fillable = ['correo','id_preferencia','intensidad'];
 }
