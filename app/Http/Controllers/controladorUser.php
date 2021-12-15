@@ -345,11 +345,26 @@ class controladorUser extends Controller
         });
 
             Persona::where('correo', $email)
-            ->update(['contraseña' => md5($persona->contraseña)]);
+            ->update(['contraseña' => md5($pass)]);
 
             return response()->json(['message'=>'Envio con la nueva password correcto.'],201);
         }else{
             return response()->json(['message'=>'¡No se ha podido cambiar la password'],400);
+        }
+    }
+
+    public function cerrarSesion(Request $req){
+        $correo = $req->get('correo');
+        //dd($correo);
+
+        $persona = Persona::find($correo);
+        if(isset($persona)){
+            Persona::where('correo', $correo)
+            ->update(['conectado' => 0]);
+
+            return response()->json(['message'=>'Cierre de sesion correcto.'],201);
+        }else{
+            return response()->json(['message'=>'Fallo al cerrar sesion.'],400);
         }
     }
 }
