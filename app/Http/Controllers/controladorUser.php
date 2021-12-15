@@ -184,6 +184,10 @@ class controladorUser extends Controller
                     'correo2' => $correo2
                 ]);
 
+                $amigosReves = DB::table('amigos')->insert([
+                    'correo1' => $correo2,
+                    'correo2' => $correo1
+                ]);
 
                 //La primera persona le ha dado like a la segunda:
                 Notificacion::create([
@@ -244,5 +248,23 @@ class controladorUser extends Controller
         ->update(['leido' => 1]);
 
         return response()->json(['message'=>'La notificacion ha sido leida'],200);
+    }
+
+
+    public function amigosConectados(Request $req){
+        $correo = $req->get('correo');
+        $amigos = Amigo::where('correo1',$correo)->select('correo2')->get();
+        $arrayAmigosConectados = [];
+        foreach($amigos as $amigo){
+            //dd($amigo->getAttributes('correo2'));
+            $correoAmigo = $amigo->getAttributes('correo2');
+            $personaAmiga = Persona::find($correoAmigo);
+            //dd($personaAmiga[0]->conectado);
+            if($personaAmiga[0]->conectado == 1){
+                $arrayAmigosConectados[] = $personaAmiga;
+            }
+        }
+        //dd($arrayAmigosConectados);
+        return response()->json($arrayAmigosConectados,201);
     }
 }

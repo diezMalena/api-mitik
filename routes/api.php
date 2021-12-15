@@ -38,6 +38,7 @@ Route::group(['middleware' => ['Cors']], function () {
     Route::post('darLike',[controladorUser::class,'darLike']);
     Route::post('notificaciones',[controladorUser::class,'notificaciones']);
     Route::post('cambiarLeido',[controladorUser::class,'cambiarLeido']);
+    Route::any('amigosConectados',[controladorUser::class,'amigosConectados']);
 
 });
 
