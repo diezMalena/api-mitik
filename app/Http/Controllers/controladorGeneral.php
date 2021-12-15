@@ -36,6 +36,9 @@ class controladorGeneral extends Controller
         $persona = Persona::find($correo);
         if(!isset($persona)){
             $persona = Persona::create($req->all());
+            //dd($persona->contraseña);
+            Persona::where('correo', $correo)
+            ->update(['contraseña' => md5($persona->contraseña)]);
             return response()->json(['message'=>'Datos insertados: '.$persona],201);
         }else{
             return response()->json(['message'=>'¡ADVERTENCIA: '.$persona .'No insertada'],400);
@@ -91,12 +94,16 @@ class controladorGeneral extends Controller
 
         $persona = Persona::find($correo);
         if(isset($persona)){
-            $persona->conectado = 1;
-            Persona::where('correo', $correo)
-            ->update(['conectado' => $persona->conectado]);
-            return response()->json(['message'=>'Inicio de sesión correcto: '.$persona],201);
+            if($persona->contraseña == md5($contraseña)){
+                $persona->conectado = 1;
+                Persona::where('correo', $correo)
+                ->update(['conectado' => $persona->conectado]);
+                return response()->json(['message'=>'Inicio de sesión correcto: '.$persona],201);
+            }else{
+                return response()->json(['message'=>'Contraseña incorrecta.'],201);
+            }
         }else{
-            return response()->json(['message'=>'¡ADVERTENCIA: '.$persona .'No registrada'],400);
+            return response()->json(['message'=>'¡ADVERTENCIA: '.$persona .'No iniciada'],400);
         }
     }
 }

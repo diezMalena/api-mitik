@@ -13,6 +13,8 @@ use App\Models\PreferenciaPersona;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+
 
 class controladorUser extends Controller
 {
@@ -296,6 +298,58 @@ class controladorUser extends Controller
             return response()->json($persona,201);
         }else{
             return response()->json(['Persona no encontrada'],400);
+        }
+    }
+
+    public function restaurarPassword(Request $req){
+        $email = $req->get('correo');
+        //dd($correo);
+        $persona = Persona::find($email);
+
+        if(isset($persona)){
+            $alea = rand(0,5);
+            $pass = "";
+            switch($alea){
+                case 0:
+                    $pass='lampara';
+                    break;
+                case 1:
+                    $pass='chubaca';
+                    break;
+                case  2:
+                    $pass='spiderman';
+                    break;
+                case 3:
+                    $pass='solandecabras';
+                    break;
+                case 4:
+                    $pass='mascarilla';
+                    break;
+                case 5:
+                    $pass='rafael';
+                    break;
+            }
+
+            $datos = [
+                'nombreUsuario' => 'Usuario',
+                'email' => $email,
+                'password' => $pass
+            ];
+
+        Mail::send([],$datos,function($message) use ($email,$pass)
+        {
+            //dd($pass);
+            $message->to($email)->subject('Restauracion de password.');
+            $message->from('AuxiliarDAW2@gmail.com');
+            $message ->setBody('<h1>Hola, amigue! Su nueva contraseña es: '.$pass.'</h1>', 'text/html');
+        });
+
+            Persona::where('correo', $email)
+            ->update(['contraseña' => md5($persona->contraseña)]);
+
+            return response()->json(['message'=>'Envio con la nueva password correcto.'],201);
+        }else{
+            return response()->json(['message'=>'¡No se ha podido cambiar la password'],400);
         }
     }
 }
