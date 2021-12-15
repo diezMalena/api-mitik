@@ -46,7 +46,6 @@ class controladorUser extends Controller
         //Cogemos a todas las personas menos la que esta dentro de la aplicacion:
         $arrayPersonas = DB::table('personas')
                     ->join('gusto_generos','gusto_generos.correo','=','personas.correo')
-                    //->join('likes','likes.correo2','!=','personas.correo')  //Aqui no incluimos a la persona porque le hemos dado like antes
                     ->select('personas.correo AS correo','personas.nombre AS nombre', 'personas.fechaNacimiento AS fechaNacimiento', 'personas.ciudad AS ciudad','personas.descripcion AS descripcion',
                     'personas.tipoRelacion AS tipoRelacion','personas.tieneHijos AS tieneHijos','personas.quiereHijos AS quiereHijos','personas.id_genero AS id_genero',
                     'gusto_generos.id_genero AS id_generoGusto')
@@ -54,10 +53,23 @@ class controladorUser extends Controller
                     ->get();
         //dd($arrayPersonas);
 
+
+
         $arrayMediocre = array();
         $arraySuper = array();
 
+
         foreach($arrayPersonas as $per){
+            //Recogemos a las personas que la persona logueada le ha dado like:
+            $arrayPersonasLike = DB::table('likes')
+            ->select('correo2')
+            ->where('correo1','=',$correo)
+            ->where('correo2','=', $per->correo)
+            ->get();
+
+            //dd($arrayPersonasLike);
+
+
             //Tenemos que coger las preferencias de cada persona:
             $prefPer = DB::table('preferencias_personas')
                         ->select('id_preferencia','intensidad')
@@ -66,14 +78,19 @@ class controladorUser extends Controller
             //dd($prefPer);
 
             $per->fechaNacimiento = $this->calculaEdad($per->fechaNacimiento);
-
+            //Vamos a crear esta propiedad para poder cambiar de forma los corazones segun si le hemos dado like o no:
+            $per->dadoLike = false;
             $esAfin = $this->calcularAfinidad($persona[0],$preferenciaPersona,$per,$prefPer);
 
-            if($esAfin == 1){
-                $arrayMediocre[] = $per;
-            }else{
-                if($esAfin == 2){
-                    $arraySuper[] = $per;
+            //Cuando correo1 no le haya dado like a correo2, entonces significara que esa persona no tiene el like
+            //y la mostraremos en las sugerencias:
+            if($arrayPersonasLike->isEmpty()){
+                if($esAfin == 1){
+                    $arrayMediocre[] = $per;
+                }else{
+                    if($esAfin == 2){
+                        $arraySuper[] = $per;
+                    }
                 }
             }
         }
@@ -266,5 +283,19 @@ class controladorUser extends Controller
         }
         //dd($arrayAmigosConectados);
         return response()->json($arrayAmigosConectados,201);
+    }
+
+
+    public function buscarPersona(Request $req){
+        $correo = $req->get('correo');
+        //dd($correo);
+        $persona = Persona::find($correo);
+        if(isset($persona)){
+            $persona->fechaNacimiento = $this->calculaEdad($persona->fechaNacimiento);
+            $persona->dadoLike = false;
+            return response()->json($persona,201);
+        }else{
+            return response()->json(['Persona no encontrada'],400);
+        }
     }
 }
