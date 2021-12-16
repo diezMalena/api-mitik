@@ -44,6 +44,8 @@ Route::group(['middleware' => ['Cors']], function () {
     Route::post('restaurarPassword',[controladorUser::class,'restaurarPassword']);
     Route::get('activarCuenta',[controladorGeneral::class,'activarCuenta']);
     Route::post('cerrarSesion',[controladorUser::class,'cerrarSesion']);
+    Route::any('personaAEditar',[controladorUser::class,'personaAEditar']);
+    Route::put('editarPersona',[controladorUser::class,'editarPersona']);
 
 });
 

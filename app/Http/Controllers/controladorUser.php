@@ -367,4 +367,39 @@ class controladorUser extends Controller
             return response()->json(['message'=>'Fallo al cerrar sesion.'],400);
         }
     }
+
+
+    public function personaAEditar(Request $req){
+        $correo = $req->get('correo');
+        //dd($correo);
+
+        $persona = Persona::find($correo);
+        if(isset($persona)){
+            //dd($persona->getAttributes());
+            return response()->json($persona,201);
+        }else{
+            return response()->json(['message'=>'Fallo al recoger a la persona.'],400);
+        }
+    }
+
+    public function editarPersona(Request $req){
+        //dd($req);
+        $datos = json_decode($req->getContent());
+        $correo = $datos->correo;
+        $nombre = $datos->nombre;
+        $contraseña = $datos->contraseña;
+        $ciudad = $datos->ciudad;
+        $descripcion = $datos->descripcion;
+        $id_genero = $datos->id_genero;
+
+        try{
+            Persona::where('correo', $correo)
+            ->update(['nombre' => $nombre, 'contraseña' => md5($contraseña), 'ciudad' => $ciudad, 'descripcion' => $descripcion, 'id_genero' => $id_genero]);
+
+            return response()->json(['message'=>'Persona actualizada: '.$correo],201);
+        }
+        catch(Exception $ex){
+            return response()->json(['message'=>'La persona no se ha actualizado'],400);
+        }
+    }
 }
