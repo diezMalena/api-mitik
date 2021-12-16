@@ -46,6 +46,8 @@ Route::group(['middleware' => ['Cors']], function () {
     Route::post('cerrarSesion',[controladorUser::class,'cerrarSesion']);
     Route::any('personaAEditar',[controladorUser::class,'personaAEditar']);
     Route::put('editarPersona',[controladorUser::class,'editarPersona']);
+    //En la siguiente ruta, el DELETE no me funcionaba, me daba error 405.
+    Route::post('borrarCuenta',[controladorUser::class,'borrarCuenta']);
 
 });
 

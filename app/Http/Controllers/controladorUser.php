@@ -402,4 +402,17 @@ class controladorUser extends Controller
             return response()->json(['message'=>'La persona no se ha actualizado'],400);
         }
     }
+
+    public function borrarCuenta(Request $req){
+        $correo = $req->get('correo');
+        //dd($correo);
+        $persona = Persona::find($correo);
+
+        if (isset($persona)) {
+            $persona->delete();
+            return response()->json(['message'=>'Persona borrada: '.$correo],201);
+        }else{
+            return response()->json(['message' =>'La persona no se ha podido borrar.'], 400);
+        }
+    }
 }
