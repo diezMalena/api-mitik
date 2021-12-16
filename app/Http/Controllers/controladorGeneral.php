@@ -13,26 +13,45 @@ use Illuminate\Support\Facades\Mail;
 
 class controladorGeneral extends Controller
 {
+
+    /**
+     * Funcion que devuelve el total de generos guardados en la Base de Datos.
+     */
     public function listarGeneros(){
         return Genero::all();
     }
 
+    /**
+     * Funcion que devuelve el total de preferencias guardadas en la Base de Datos.
+     */
     public function listarPreferencias(){
         return Preferencia::all();
     }
 
+    /**
+     * Funcion que devuelve el total de Personas guardadas en la Base de Datos.
+     */
     public function listarPersonas(){
         return Persona::all();
     }
 
+    /**
+     * Funcion que devuelve el total de preferencias de la persona en la Base de Datos.
+     */
     public function preferenciaPersona(){
         return PreferenciaPersona::all();
     }
 
+    /**
+     * Funcion que devuelve el gusto genero de la persona en la Base de Datos.
+     */
     public function gustoGenero(){
         return GustoGenero::all();
     }
 
+    /**
+     * Funcion que permite a una persona registrarse en Mitik, recibiendo el correo desde el cliente.
+     */
     public function registrar(Request $req){
         $correo = $req->get('correo');
         $persona = Persona::find($correo);
@@ -52,7 +71,10 @@ class controladorGeneral extends Controller
         }
     }
 
-
+    /**
+     * Esta funcion envia un correo a la persona para poder verificarla en la Base de Datos
+     * y permitirle el acceso a la aplicacion.
+     */
     public function enviarCorreo($email){
         //dd($email);
         $datos = [
@@ -68,6 +90,7 @@ class controladorGeneral extends Controller
         });
     }
 
+
     public function activarCuenta(Request $req){
         $correo = $req->get('email');
         //dd($correo);
@@ -76,6 +99,9 @@ class controladorGeneral extends Controller
     }
 
 
+    /**
+     * Funcion que actualiza los campos de la persona que se recogen en la ventana registro de preferencias.
+     */
     public function actualizarPersona(Request $req){
         $datos = json_decode($req->getContent());
         $correo = $datos->correo;
@@ -95,6 +121,9 @@ class controladorGeneral extends Controller
     }
 
 
+    /**
+     * Funcion que añade las preferencias de la persona a la Base de Datos.
+     */
     public function addPreferenciaPersona(Request $req){
         try{
             $pref = PreferenciaPersona::create($req->all());
@@ -105,7 +134,9 @@ class controladorGeneral extends Controller
         }
     }
 
-
+    /**
+     * Funcion que añade el gusto de genero de la persona a la Base de Datos.
+     */
     public function addGustoGenero(Request $req){
         try{
             $gustoGenero = GustoGenero::create($req->all());
@@ -116,7 +147,9 @@ class controladorGeneral extends Controller
         }
     }
 
-
+    /**
+     * Funcion que permite iniciar sesion a la persona en Mitik.
+     */
     public function iniciarSesion(Request $req){
         ///dd($req->get('correo'));
         $correo = $req->get('correo');
