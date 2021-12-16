@@ -21,6 +21,9 @@ class controladorUser extends Controller
     //
 
 
+    /**
+     * Funcion que se encarga de mostrarle las sugerencias a la persona que ha iniciado sesion.
+     */
     public function sugerencias(Request $req){
         $correo = $req->get('correo');
         //dd($correo);
@@ -170,6 +173,9 @@ class controladorUser extends Controller
         return $afin;
     }
 
+    /**
+     * Funcion que cambia la fecha de nacimiento por la edad que tiene la persona.
+     */
     function calculaEdad($fechaNacimiento){
         list($ano,$mes,$dia) = explode("-",$fechaNacimiento);
         $ano_diferencia  = date("Y") - $ano;
@@ -181,6 +187,9 @@ class controladorUser extends Controller
     }
 
 
+    /**
+     * Funcion que permite dar like a otra persona, añadiendo el registro correspondiente a la Base de Datos.
+     */
     public function darLike(Request $req){
         //dd($req->all());
         $correo1 = $req->get('correo1');
@@ -250,6 +259,9 @@ class controladorUser extends Controller
     }
 
 
+    /**
+     * Funcion que permite visualizar al usuario las diferentes notificaciones que ha recibido de likes o amigos.
+     */
     public function notificaciones(Request $req){
         $correo = $req->get('correo');
         //dd($correo);
@@ -260,6 +272,9 @@ class controladorUser extends Controller
     }
 
 
+    /**
+     * Funcion que cambia el estado del mensaje a leido cuando el usuario ha abierto las notificaciones.
+     */
     public function cambiarLeido(Request $req){
         $correo = $req->get('correo');
         //Establecemos el leido a 1 para indicar que la notificacion ya la ha leido el usuario:
@@ -270,6 +285,9 @@ class controladorUser extends Controller
     }
 
 
+    /**
+     * Funcion que devuelve los amigos conectados que tiene la persona que ha iniciado sesion.
+     */
     public function amigosConectados(Request $req){
         $correo = $req->get('correo');
         $amigos = Amigo::where('correo1',$correo)->select('correo2')->get();
@@ -287,7 +305,9 @@ class controladorUser extends Controller
         return response()->json($arrayAmigosConectados,201);
     }
 
-
+    /**
+     * Funcion que devuelve una persona cuando la persona que inicia sesion la busca.
+     */
     public function buscarPersona(Request $req){
         $correo = $req->get('correo');
         //dd($correo);
@@ -301,6 +321,9 @@ class controladorUser extends Controller
         }
     }
 
+    /**
+     * Funcion que permite al usuario cambiar la contraseña por una aleatoria que recibe por correo electronico.
+     */
     public function restaurarPassword(Request $req){
         $email = $req->get('correo');
         //dd($correo);
@@ -353,6 +376,9 @@ class controladorUser extends Controller
         }
     }
 
+    /**
+     * Funcion que permite cerrar sesion a la persona, poniendo el campo conectado a 0.
+     */
     public function cerrarSesion(Request $req){
         $correo = $req->get('correo');
         //dd($correo);
@@ -368,7 +394,9 @@ class controladorUser extends Controller
         }
     }
 
-
+    /**
+     * Funcion que devuelve la persona que inicia sesion para poder editar sus campos.
+     */
     public function personaAEditar(Request $req){
         $correo = $req->get('correo');
         //dd($correo);
@@ -382,6 +410,9 @@ class controladorUser extends Controller
         }
     }
 
+    /**
+     * Funcion que recibe los campos con los datos nuevos y los actualiza en la Base de Datos.
+     */
     public function editarPersona(Request $req){
         //dd($req);
         $datos = json_decode($req->getContent());
@@ -403,6 +434,9 @@ class controladorUser extends Controller
         }
     }
 
+    /**
+     * Funcion que recibe el correo de la persona que inicia sesion, para borrarla de la Base de Datos.
+     */
     public function borrarCuenta(Request $req){
         $correo = $req->get('correo');
         //dd($correo);
